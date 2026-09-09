@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.svg">
+<title>Meine Teams</title>
+<style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;color:#111827;background:#f3f4f6}
+*{box-sizing:border-box}body{margin:0}.app{max-width:720px;margin:auto;padding:env(safe-area-inset-top) 16px 30px}
+header{padding:28px 4px 18px}h1{font-size:32px;margin:0 0 4px} .sub{color:#6b7280}
+.section{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6b7280;margin:22px 4px 10px}
+.card{background:white;border-radius:18px;padding:15px;margin:9px 0;box-shadow:0 2px 10px #0000000b;display:flex;align-items:center;gap:14px}
+.logo{width:46px;height:46px;border-radius:14px;background:#111827;color:white;display:grid;place-items:center;font-weight:800;font-size:12px}
+.info{flex:1}.team{font-weight:750;font-size:17px}.sport{font-size:13px;color:#6b7280;margin-top:3px}.result{text-align:right;font-weight:800}.next{font-size:12px;color:#6b7280;font-weight:500;margin-top:4px}
+.hero{background:#111827;color:white;border-radius:22px;padding:20px;margin-top:8px}.hero .label{font-size:12px;opacity:.65;text-transform:uppercase;letter-spacing:.1em}.hero h2{margin:7px 0 5px;font-size:22px}.hero p{margin:0;opacity:.8}
+footer{text-align:center;color:#9ca3af;font-size:12px;margin-top:25px}
+</style></head>
+<body><main class="app">
+<header><h1>⭐ Meine Teams</h1><div class="sub">Ergebnisse & nächste Spiele</div></header>
+<div class="hero"><div class="label">Deine Sportwelt</div><h2>Alle Lieblingsclubs auf einen Blick</h2><p>Die erste Version ist bereit – Live-Daten können als Nächstes angebunden werden.</p></div>
+<div id="content"></div><footer>Sport Dashboard · Version 0.1</footer>
+</main>
+<script>
+const groups=[
+["⚽ Fussball",[
+["FC Basel","FCB","Fussball"],["Olympique de Marseille","OM","Fussball"],["Eintracht Frankfurt","SGE","Fussball"],["Celta Vigo","CEL","Fussball"]]],
+["🏉 Rugby",[
+["Harlequins","QUINS","Rugby"],["Stade Rochelais","SR","Rugby"],["All Blacks","AB","Rugby"],["Suisse Rugby","SUI","Rugby"]]],
+["🏐 Volleyball",[["Volley Franches-Montagnes Frauen","VFM","Volleyball"]]],
+["🏒 Eishockey",[["HC Franches-Montagnes","HCFM","Eishockey"]]],
+["🏈 NFL",[["Chicago Bears","BEARS","NFL"]]]
+];
+const root=document.querySelector("#content");
+groups.forEach(([title,teams])=>{
+ root.insertAdjacentHTML("beforeend",`<div class="section">${title}</div>`);
+ teams.forEach(([name,abbr,sport])=>{
+   root.insertAdjacentHTML("beforeend",`<div class="card"><div class="logo">${abbr}</div><div class="info"><div class="team">${name}</div><div class="sport">${sport}</div></div><div class="result">—<div class="next">Noch keine Live-Daten</div></div></div>`);
+ });
+});
+if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
+</script></body></html>
