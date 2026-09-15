@@ -1,44 +1,42 @@
-<!doctype html>
-<html lang="de">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111827">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon.svg">
+<!doctype html><html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111827"><link rel="manifest" href="manifest.json">
 <title>Meine Teams</title>
 <style>
-:root{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;color:#111827;background:#f3f4f6}
-*{box-sizing:border-box}body{margin:0}.app{max-width:720px;margin:auto;padding:env(safe-area-inset-top) 16px 30px}
-header{padding:28px 4px 18px}h1{font-size:32px;margin:0 0 4px} .sub{color:#6b7280}
-.section{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6b7280;margin:22px 4px 10px}
-.card{background:white;border-radius:18px;padding:15px;margin:9px 0;box-shadow:0 2px 10px #0000000b;display:flex;align-items:center;gap:14px}
-.logo{width:46px;height:46px;border-radius:14px;background:#111827;color:white;display:grid;place-items:center;font-weight:800;font-size:12px}
-.info{flex:1}.team{font-weight:750;font-size:17px}.sport{font-size:13px;color:#6b7280;margin-top:3px}.result{text-align:right;font-weight:800}.next{font-size:12px;color:#6b7280;font-weight:500;margin-top:4px}
-.hero{background:#111827;color:white;border-radius:22px;padding:20px;margin-top:8px}.hero .label{font-size:12px;opacity:.65;text-transform:uppercase;letter-spacing:.1em}.hero h2{margin:7px 0 5px;font-size:22px}.hero p{margin:0;opacity:.8}
-footer{text-align:center;color:#9ca3af;font-size:12px;margin-top:25px}
-</style></head>
-<body><main class="app">
-<header><h1>⭐ Meine Teams</h1><div class="sub">Ergebnisse & nächste Spiele</div></header>
-<div class="hero"><div class="label">Deine Sportwelt</div><h2>Alle Lieblingsclubs auf einen Blick</h2><p>Die erste Version ist bereit – Live-Daten können als Nächstes angebunden werden.</p></div>
-<div id="content"></div><footer>Sport Dashboard · Version 0.1</footer>
-</main>
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f3f4f6;color:#111827}
+header{background:#111827;color:#fff;padding:22px 18px}h1{margin:0;font-size:27px}header p{margin:5px 0 0;color:#cbd5e1;font-size:13px}
+main{max-width:760px;margin:auto;padding:14px}.toolbar{display:flex;gap:10px;margin-bottom:15px;align-items:center}
+button{border:0;border-radius:12px;padding:10px 14px;font-weight:700;background:#111827;color:#fff}.status{font-size:12px;color:#64748b}
+.section{margin:20px 0}.sport{font-size:21px;font-weight:900;margin-bottom:8px}.card{background:#fff;border-radius:17px;padding:15px;margin:9px 0;box-shadow:0 2px 8px #0001}
+.team{font-size:17px;font-weight:850}.league{font-size:12px;color:#64748b;margin-top:2px}details{margin-top:12px;border-top:1px solid #e5e7eb;padding-top:10px}summary{font-weight:800}
+.item{padding:9px 0;border-bottom:1px solid #f1f5f9}.row{display:flex;justify-content:space-between;gap:10px}.muted{color:#64748b;font-size:12px}.score{font-weight:900;white-space:nowrap}.empty{color:#64748b;font-size:13px;padding:8px 0}
+.notice{background:#eef2ff;border-radius:14px;padding:11px 12px;font-size:12px;color:#3730a3;margin-bottom:12px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{text-align:left;padding:6px 4px;border-bottom:1px solid #eef2f7}th{color:#64748b;font-size:10px}.me{font-weight:900}
+a{color:inherit}
+</style></head><body>
+<header><h1>Meine Teams</h1><p>Letztes Resultat · Nächstes Spiel · Tabelle</p></header><main>
+<div class="toolbar"><button onclick="loadAll()">↻ Aktualisieren</button><span id="status" class="status"></span></div>
+<div class="notice">Aktuelle Spiel- und Resultatdaten werden beim Aktualisieren geladen. Tabellen werden dort angezeigt, wo die Datenquelle sie bereitstellt.</div>
+<div id="app"></div></main>
 <script>
-const groups=[
-["⚽ Fussball",[
-["FC Basel","FCB","Fussball"],["Olympique de Marseille","OM","Fussball"],["Eintracht Frankfurt","SGE","Fussball"],["Celta Vigo","CEL","Fussball"]]],
-["🏉 Rugby",[
-["Harlequins","QUINS","Rugby"],["Stade Rochelais","SR","Rugby"],["All Blacks","AB","Rugby"],["Suisse Rugby","SUI","Rugby"]]],
-["🏐 Volleyball",[["Volley Franches-Montagnes Frauen","VFM","Volleyball"]]],
-["🏒 Eishockey",[["HC Franches-Montagnes","HCFM","Eishockey"]]],
-["🏈 NFL",[["Chicago Bears","BEARS","NFL"]]]
-];
-const root=document.querySelector("#content");
-groups.forEach(([title,teams])=>{
- root.insertAdjacentHTML("beforeend",`<div class="section">${title}</div>`);
- teams.forEach(([name,abbr,sport])=>{
-   root.insertAdjacentHTML("beforeend",`<div class="card"><div class="logo">${abbr}</div><div class="info"><div class="team">${name}</div><div class="sport">${sport}</div></div><div class="result">—<div class="next">Noch keine Live-Daten</div></div></div>`);
- });
-});
-if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
+const teams=[
+["football","FC Basel",133957,"Swiss Super League",4820],
+["football","Olympique de Marseille",133707,"Ligue 1",4334],
+["football","Eintracht Frankfurt",133814,"Bundesliga",4331],
+["football","Celta Vigo",133937,"La Liga",4335],
+["rugby","Harlequins",135202,"Gallagher Premiership",null],
+["rugby","Stade Rochelais",135340,"Top 14",null],
+["rugby","All Blacks",137133,"International",null],
+["rugby","Suisse Rugby",150777,"International",null],
+["volleyball","Volley Franches-Montagnes Frauen",null,"LNA",null],
+["hockey","HC Franches-Montagnes",null,"MyHockey League",null],
+["nfl","Chicago Bears",134938,"NFL",null]];
+const names={football:"⚽ Fussball",rugby:"🏉 Rugby",volleyball:"🏐 Volleyball",hockey:"🏒 Eishockey",nfl:"🏈 NFL"};
+async function api(p){let r=await fetch("https://www.thesportsdb.com/api/v1/json/3/"+p);if(!r.ok)throw Error();return r.json()}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function date(e){if(!e?.dateEvent)return"";let d=new Date(e.dateEvent+"T"+(e.strTime||"00:00:00"));return isNaN(d)?e.dateEvent:d.toLocaleDateString("de-CH",{weekday:"short",day:"2-digit",month:"2-digit"})}
+function event(e){if(!e)return'<div class="empty">Keine Daten gefunden.</div>';let s=e.intHomeScore!=null&&e.intAwayScore!=null?e.intHomeScore+" : "+e.intAwayScore:"";return'<div class="item"><div class="row"><span>'+esc(e.strHomeTeam)+' – '+esc(e.strAwayTeam)+'</span><span class="score">'+s+'</span></div><div class="muted">'+esc(date(e))+' · '+esc(e.strLeague||"")+'</div></div>'}
+function table(rows){if(!rows?.length)return'<div class="empty">Keine Tabelle über diese Datenquelle.</div>';return'<table><tr><th>#</th><th>Team</th><th>Sp</th><th>Diff.</th><th>Pts</th></tr>'+rows.map((r,i)=>'<tr class="me"><td>'+(r.intRank||i+1)+'</td><td>'+esc(r.strTeam)+'</td><td>'+esc(r.intPlayed||"")+'</td><td>'+esc(r.intGoalDifference||r.intDifference||"")+'</td><td><b>'+esc(r.intPoints||"")+'</b></td></tr>').join("")+'</table>'}
+async function card(t){let [sport,name,id,league,tid]=t,n=null,l=null,tab=null;try{if(id){let a=await Promise.all([api("eventsnext.php?id="+id),api("eventslast.php?id="+id)]);n=(a[0].events||[])[0];l=(a[1].results||[])[0];if(tid)try{tab=(await api("lookuptable.php?l="+tid)).table}catch{}}}catch{}
+return'<div class="card"><div class="team">'+esc(name)+'</div><div class="league">'+esc(league)+'</div><details open><summary>Letztes Resultat</summary>'+event(l)+'</details><details open><summary>Nächstes Spiel</summary>'+event(n)+'</details><details><summary>Tabelle</summary>'+table(tab)+'</details></div>'}
+async function loadAll(){let app=document.getElementById("app");app.innerHTML="";document.getElementById("status").textContent="Lädt …";for(let sp of ["football","rugby","volleyball","hockey","nfl"]){let a=teams.filter(t=>t[0]===sp);if(!a.length)continue;let s=document.createElement("section");s.className="section";s.innerHTML='<div class="sport">'+names[sp]+"</div>";app.appendChild(s);for(let t of a)s.insertAdjacentHTML("beforeend",await card(t))}document.getElementById("status").textContent="Aktualisiert "+new Date().toLocaleTimeString("de-CH",{hour:"2-digit",minute:"2-digit"})}loadAll();
 </script></body></html>
