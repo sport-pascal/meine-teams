@@ -1,42 +1,35 @@
-<!doctype html><html lang="de"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111827"><link rel="manifest" href="manifest.json">
 <title>Meine Teams</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f3f4f6;color:#111827}
-header{background:#111827;color:#fff;padding:22px 18px}h1{margin:0;font-size:27px}header p{margin:5px 0 0;color:#cbd5e1;font-size:13px}
-main{max-width:760px;margin:auto;padding:14px}.toolbar{display:flex;gap:10px;margin-bottom:15px;align-items:center}
-button{border:0;border-radius:12px;padding:10px 14px;font-weight:700;background:#111827;color:#fff}.status{font-size:12px;color:#64748b}
-.section{margin:20px 0}.sport{font-size:21px;font-weight:900;margin-bottom:8px}.card{background:#fff;border-radius:17px;padding:15px;margin:9px 0;box-shadow:0 2px 8px #0001}
-.team{font-size:17px;font-weight:850}.league{font-size:12px;color:#64748b;margin-top:2px}details{margin-top:12px;border-top:1px solid #e5e7eb;padding-top:10px}summary{font-weight:800}
-.item{padding:9px 0;border-bottom:1px solid #f1f5f9}.row{display:flex;justify-content:space-between;gap:10px}.muted{color:#64748b;font-size:12px}.score{font-weight:900;white-space:nowrap}.empty{color:#64748b;font-size:13px;padding:8px 0}
-.notice{background:#eef2ff;border-radius:14px;padding:11px 12px;font-size:12px;color:#3730a3;margin-bottom:12px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{text-align:left;padding:6px 4px;border-bottom:1px solid #eef2f7}th{color:#64748b;font-size:10px}.me{font-weight:900}
-a{color:inherit}
+*{box-sizing:border-box}body{margin:0;background:#f3f4f6;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{background:#111827;color:#fff;padding:22px 18px}h1{margin:0;font-size:28px}header p{margin:5px 0 0;color:#cbd5e1;font-size:13px}
+main{max-width:760px;margin:auto;padding:14px}.toolbar{display:flex;gap:10px;align-items:center;margin-bottom:14px}
+button{background:#111827;color:#fff;border:0;border-radius:12px;padding:10px 14px;font-weight:800}.status{font-size:12px;color:#64748b}
+.section{margin:22px 0}.sport{font-size:21px;font-weight:900;margin-bottom:8px}.card{background:#fff;border-radius:17px;padding:15px;margin:9px 0;box-shadow:0 2px 8px #0001}
+.head{display:flex;align-items:center;gap:10px}.logo{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:#f8fafc;font-size:25px}
+.team{font-weight:900;font-size:17px}.league{font-size:12px;color:#64748b;margin-top:2px}details{margin-top:12px;border-top:1px solid #e5e7eb;padding-top:10px}summary{font-weight:800}
+.item{padding:9px 0;border-bottom:1px solid #f1f5f9}.row{display:flex;justify-content:space-between;gap:10px}.muted{font-size:12px;color:#64748b}.score{font-weight:900}.empty{font-size:13px;color:#64748b;padding:8px 0}
+.cycling{background:#111827;color:#fff}.cycling details{border-color:#374151}.cycling .muted{color:#cbd5e1}a{color:inherit}
 </style></head><body>
-<header><h1>Meine Teams</h1><p>Letztes Resultat · Nächstes Spiel · Tabelle</p></header><main>
-<div class="toolbar"><button onclick="loadAll()">↻ Aktualisieren</button><span id="status" class="status"></span></div>
-<div class="notice">Aktuelle Spiel- und Resultatdaten werden beim Aktualisieren geladen. Tabellen werden dort angezeigt, wo die Datenquelle sie bereitstellt.</div>
-<div id="app"></div></main>
+<header><h1>⭐ Meine Teams</h1><p>Letztes Resultat · Nächstes Spiel · Tabelle</p></header>
+<main><div class="toolbar"><button onclick="loadAll()">↻ Aktualisieren</button><span id="status" class="status"></span></div><div id="app"></div></main>
 <script>
-const teams=[
-["football","FC Basel",133957,"Swiss Super League",4820],
-["football","Olympique de Marseille",133707,"Ligue 1",4334],
-["football","Eintracht Frankfurt",133814,"Bundesliga",4331],
-["football","Celta Vigo",133937,"La Liga",4335],
-["rugby","Harlequins",135202,"Gallagher Premiership",null],
-["rugby","Stade Rochelais",135340,"Top 14",null],
-["rugby","All Blacks",137133,"International",null],
-["rugby","Suisse Rugby",150777,"International",null],
-["volleyball","Volley Franches-Montagnes Frauen",null,"LNA",null],
-["hockey","HC Franches-Montagnes",null,"MyHockey League",null],
-["nfl","Chicago Bears",134938,"NFL",null]];
-const names={football:"⚽ Fussball",rugby:"🏉 Rugby",volleyball:"🏐 Volleyball",hockey:"🏒 Eishockey",nfl:"🏈 NFL"};
-async function api(p){let r=await fetch("https://www.thesportsdb.com/api/v1/json/3/"+p);if(!r.ok)throw Error();return r.json()}
+const clubs=[["⚽", "FC Basel", "Swiss Super League", "https://fcb.ch/"], ["⚽", "Olympique de Marseille", "Ligue 1", "https://www.om.fr/"], ["⚽", "Eintracht Frankfurt", "Bundesliga", "https://www.eintracht.de/"], ["⚽", "Celta Vigo", "La Liga", "https://rccelta.es/"], ["🏉", "Harlequins", "Gallagher Premiership", "https://www.quins.co.uk/"], ["🏉", "Stade Rochelais", "Top 14", "https://www.staderochelais.com/"], ["🏉", "All Blacks", "International", "https://www.allblacks.com/"], ["🏉", "Suisse Rugby", "International", "https://www.suisserugby.com/"], ["🏉", "Basel RFC", "Swiss Rugby", "https://fsr.sportlomo.com/league/218696/"], ["🏐", "Volley Franches-Montagnes Frauen", "LNA", "https://www.vfm.ch/fr/"], ["🏒", "HC Franches-Montagnes", "MyHockey League", "https://www.sihf.ch/"], ["🏒", "HC Ambri-Piotta", "National League", "https://hcap.ch/"], ["🏈", "Chicago Bears", "NFL", "https://www.nfl.com/"]];
+const ids={"FC Basel":133957,"Olympique de Marseille":133707,"Eintracht Frankfurt":133814,"Celta Vigo":133937,"Harlequins":135202,"Stade Rochelais":135340,"All Blacks":137133,"Suisse Rugby":150777,"Chicago Bears":134938};
+const logos={"FC Basel":"⚽","Olympique de Marseille":"⚽","Eintracht Frankfurt":"🦅","Celta Vigo":"⚽","Harlequins":"🏉","Stade Rochelais":"🏉","All Blacks":"🇳🇿","Suisse Rugby":"🇨🇭","Basel RFC":"🏉","Volley Franches-Montagnes Frauen":"🏐","HC Franches-Montagnes":"🏒","HC Ambri-Piotta":"🏒","Chicago Bears":"🐻"};
 function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+async function api(p){let r=await fetch("https://www.thesportsdb.com/api/v1/json/3/"+p);if(!r.ok)throw Error();return r.json()}
 function date(e){if(!e?.dateEvent)return"";let d=new Date(e.dateEvent+"T"+(e.strTime||"00:00:00"));return isNaN(d)?e.dateEvent:d.toLocaleDateString("de-CH",{weekday:"short",day:"2-digit",month:"2-digit"})}
-function event(e){if(!e)return'<div class="empty">Keine Daten gefunden.</div>';let s=e.intHomeScore!=null&&e.intAwayScore!=null?e.intHomeScore+" : "+e.intAwayScore:"";return'<div class="item"><div class="row"><span>'+esc(e.strHomeTeam)+' – '+esc(e.strAwayTeam)+'</span><span class="score">'+s+'</span></div><div class="muted">'+esc(date(e))+' · '+esc(e.strLeague||"")+'</div></div>'}
-function table(rows){if(!rows?.length)return'<div class="empty">Keine Tabelle über diese Datenquelle.</div>';return'<table><tr><th>#</th><th>Team</th><th>Sp</th><th>Diff.</th><th>Pts</th></tr>'+rows.map((r,i)=>'<tr class="me"><td>'+(r.intRank||i+1)+'</td><td>'+esc(r.strTeam)+'</td><td>'+esc(r.intPlayed||"")+'</td><td>'+esc(r.intGoalDifference||r.intDifference||"")+'</td><td><b>'+esc(r.intPoints||"")+'</b></td></tr>').join("")+'</table>'}
-async function card(t){let [sport,name,id,league,tid]=t,n=null,l=null,tab=null;try{if(id){let a=await Promise.all([api("eventsnext.php?id="+id),api("eventslast.php?id="+id)]);n=(a[0].events||[])[0];l=(a[1].results||[])[0];if(tid)try{tab=(await api("lookuptable.php?l="+tid)).table}catch{}}}catch{}
-return'<div class="card"><div class="team">'+esc(name)+'</div><div class="league">'+esc(league)+'</div><details open><summary>Letztes Resultat</summary>'+event(l)+'</details><details open><summary>Nächstes Spiel</summary>'+event(n)+'</details><details><summary>Tabelle</summary>'+table(tab)+'</details></div>'}
-async function loadAll(){let app=document.getElementById("app");app.innerHTML="";document.getElementById("status").textContent="Lädt …";for(let sp of ["football","rugby","volleyball","hockey","nfl"]){let a=teams.filter(t=>t[0]===sp);if(!a.length)continue;let s=document.createElement("section");s.className="section";s.innerHTML='<div class="sport">'+names[sp]+"</div>";app.appendChild(s);for(let t of a)s.insertAdjacentHTML("beforeend",await card(t))}document.getElementById("status").textContent="Aktualisiert "+new Date().toLocaleTimeString("de-CH",{hour:"2-digit",minute:"2-digit"})}loadAll();
+function event(e){if(!e)return'<div class="empty">Keine Daten verfügbar.</div>';let s=e.intHomeScore!=null&&e.intAwayScore!=null?e.intHomeScore+" : "+e.intAwayScore:"";return'<div class="item"><div class="row"><span>'+esc(e.strHomeTeam)+' – '+esc(e.strAwayTeam)+'</span><span class="score">'+s+'</span></div><div class="muted">'+esc(date(e))+'</div></div>'}
+async function card(t){let [icon,name,league,url]=t,n=null,l=null;try{if(ids[name]){let x=await Promise.all([api("eventsnext.php?id="+ids[name]),api("eventslast.php?id="+ids[name])]);n=(x[0].events||[])[0];l=(x[1].results||[])[0]}}catch{}
+return '<div class="card"><div class="head"><div class="logo">'+(logos[name]||icon)+'</div><div><div class="team">'+esc(name)+'</div><div class="league">'+esc(league)+' · <a href="'+url+'" target="_blank">Quelle ↗</a></div></div></div><details open><summary>Letztes Resultat</summary>'+event(l)+'</details><details open><summary>Nächstes Spiel</summary>'+event(n)+'</details><details><summary>Tabelle</summary><div class="empty">Nur Position und Punkte – wird über die jeweilige Ligaquelle ergänzt.</div></details></div>'}
+function cycling(title,url){return '<div class="card cycling"><div class="team">'+title+'</div><details open><summary>Nächstes Rennen / nächste Etappe</summary><div class="empty">Aktuelle Daten im SRF Resultcenter</div></details><details open><summary>Sieger/in letzte Etappe</summary><div class="empty">Aktuelle Daten im SRF Resultcenter</div></details><div style="margin-top:10px"><a href="'+url+'" target="_blank">SRF Resultcenter ↗</a></div></div>'}
+async function loadAll(){let a=document.getElementById("app");a.innerHTML="";document.getElementById("status").textContent="Lädt …";
+for(const [title,emoji] of [["⚽ Fussball","⚽"],["🏉 Rugby","🏉"],["🏐 Volleyball","🏐"],["🏒 Eishockey","🏒"],["🏈 NFL","🏈"]]){let g=clubs.filter(x=>x[0]===emoji);if(!g.length)continue;let s=document.createElement("section");s.className="section";s.innerHTML='<div class="sport">'+title+"</div>";a.appendChild(s);for(const t of g)s.insertAdjacentHTML("beforeend",await card(t))}
+let s=document.createElement("section");s.className="section";s.innerHTML='<div class="sport">🚴 Radsport</div>'+cycling("WorldTour Männer","https://www.srf.ch/sport/resultcenter/results/cycling/worldtour")+cycling("WorldTour Frauen","https://www.srf.ch/sport/resultcenter/results/cycling/worldtour-women");a.appendChild(s);
+document.getElementById("status").textContent="Aktualisiert "+new Date().toLocaleTimeString("de-CH",{hour:"2-digit",minute:"2-digit"})}
+loadAll();
 </script></body></html>
